@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "files": [ "command.php", "src/Sanitizer.php" ]
+        "files": [ "command.php" ]
     },
     "require": {
         "wp-cli/wp-cli": "^1.1.0"

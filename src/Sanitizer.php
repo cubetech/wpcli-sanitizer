@@ -8,6 +8,7 @@ use WP_CLI_Command;
 /**
  * Sanitize Wordpress attachments if their filename differs from the filename resulted from sanitize_title
  * @see sanitize_title()
+ * @version 1.0.0
  */
 class Sanitizer extends WP_CLI_Command
 {

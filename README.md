@@ -38,7 +38,7 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ## Changelog
 
-### 0.1.2 / 0.1.3 
+### 0.1.2 / 0.1.3 / 0.1.4
 
 - Fixed autoloading.
 

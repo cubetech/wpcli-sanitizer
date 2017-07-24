@@ -1,7 +1,7 @@
 {
     "name": "cubetech/wpcli-sanitizer",
     "description": "Sanitizes Wordpress attachments if their filenames differ from the result of sanitize_title().",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "type": "wp-cli-package",
     "homepage": "https://github.com/cubetech/wpcli-sanitizer",
     "license": "MIT",
@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "files": [ "command.php", "src/Sanitizer.php" ]
+        "files": [ "command.php" ]
     },
     "require": {
         "wp-cli/wp-cli": "^1.1.0"

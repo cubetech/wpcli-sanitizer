@@ -12,12 +12,6 @@ use WP_CLI_Command;
 class Sanitizer extends WP_CLI_Command
 {
 	/**
-	 * List of sanitized Attachments
-	 * @var array
-	 */
-	protected $sanitizedAttachments = [];
-
-	/**
 	 * Sanitizes WP attachments in Database and renames files on disk if the filename differs from sanitize_title().
 	 *
 	 *
@@ -29,40 +23,12 @@ class Sanitizer extends WP_CLI_Command
 	 */
 	public function __invoke($args, $assoc_args)
 	{
-		$this->db();
-		$this->files();
-	}
-
-	
-	/**
-	 * Sanitizes WP attachments in Database (_wp_attached_file).
-	 */
-	public function db()
-	{
 		$posts = $this->getAttachmentPosts();
 		foreach ($posts as $post) {
 			$attachment = get_attached_file($post->ID);
 			$this->sanitizeAttachmentIfNeeded($post->ID, $attachment);
 		}
 		WP_CLI::success("Sanitized " . count($this->sanitizedAttachments) . " attachments.");
-	}
-
-	/**
-	 * Renames files which were previously sanitized in the WP Database.
-	 */
-	public function files()
-	{
-		$successfulRenames = 0;
-
-		foreach ($this->sanitizedAttachments as $oldName => $newName) {
-			$result = rename($oldName, $newName);
-			if ($result) {
-				$successfulRenames++;
-			} else {
-				WP_CLI::error("Failed renaming $oldName to $newName");
-			}
-		}
-		WP_CLI::success("Renamed $successfulRenames files.");
 	}
 
 	/**
@@ -93,13 +59,21 @@ class Sanitizer extends WP_CLI_Command
 		//Only update attachment if the filename differs
 		if ($sanitizedFilename != $attachmentPathInfo['filename']) {
 			$sanitizedAttachment = "{$attachmentPathInfo['dirname']}/{$sanitizedFilename}.{$attachmentPathInfo['extension']}";
-			$this->sanitizedAttachments[$attachment] = $sanitizedAttachment;
-			
-			$result = update_attached_file($attachmentID, $sanitizedAttachment);
 
-			if (! $result) {
+			if (! update_attached_file($attachmentID, $sanitizedAttachment)) {
 				WP_CLI::error("Failed updating attachment with ID $attachmentID");
 			}
+			$this->renameFile($attachment, $sanitizedAttachment);
 		}
+	}
+
+	/**
+	 * Renames files which were previously sanitized in the WP Database.
+	 */
+	private function renameFile($oldName, $newName)
+	{
+		if (! rename($oldName, $newName);) {
+			WP_CLI::error("Failed renaming $oldName to $newName");
+		}		
 	}
 }

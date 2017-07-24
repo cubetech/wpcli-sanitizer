@@ -36,6 +36,10 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ## Changelog
 
+### 1.0.1
+
+- Removed usage of undefined class member.
+
 ### 1.0.0
 
 - Moved command to be a subcommand in `wp media`.

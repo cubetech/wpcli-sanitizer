@@ -30,7 +30,7 @@ class Sanitizer extends WP_CLI_Command
 			$attachment = get_attached_file($post->ID);
 			$this->sanitizeAttachmentIfNeeded($post->ID, $attachment);
 		}
-		WP_CLI::success("Sanitized " . count($this->sanitizedAttachments) . " attachments.");
+		WP_CLI::success("Sanitized attachments.");
 	}
 
 	/**

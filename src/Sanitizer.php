@@ -20,7 +20,7 @@ class Sanitizer extends WP_CLI_Command
 	 * ## EXAMPLES
 	 *
 	 *     wp media ct-sanitize
-	 *
+	 * 
 	 * @when after_wp_load
 	 */
 	public function __invoke($args, $assoc_args)
@@ -59,6 +59,7 @@ class Sanitizer extends WP_CLI_Command
 	 */
 	private function sanitizeAttachmentIfNeeded($attachmentID, $attachment)
 	{
+		$attachmentUrl = wp_get_attachment_url($attachmentID);
 		$attachmentPathInfo = pathinfo($attachment);
 		$sanitizedFilename = sanitize_title($attachmentPathInfo['filename']);
 
@@ -67,10 +68,13 @@ class Sanitizer extends WP_CLI_Command
 			$sanitizedAttachment = "{$attachmentPathInfo['dirname']}/{$sanitizedFilename}.{$attachmentPathInfo['extension']}";
 
 			if (! update_attached_file($attachmentID, $sanitizedAttachment)) {
-				WP_CLI::error("Failed updating attachment with ID $attachmentID");
+				WP_CLI::error("Failed updating attachment with ID $attachmentID", false);
 			}
+			$attachmentMetaData = wp_generate_attachment_metadata($attachmentID, $sanitizedAttachment);
+			wp_update_attachment_metadata($attachmentID, $attachmentMetaData);
 			$this->renameFile($attachment, $sanitizedAttachment);
-
+			$sanitizedAttachmentUrl = wp_get_attachment_url($attachmentID);
+			$this->replacePostContents($attachmentUrl, $sanitizedAttachmentUrl);
 			return true;
 		}
 
@@ -83,7 +87,12 @@ class Sanitizer extends WP_CLI_Command
 	private function renameFile($oldName, $newName)
 	{
 		if (! rename($oldName, $newName)) {
-			WP_CLI::error("Failed renaming $oldName to $newName");
+			WP_CLI::error("Failed renaming $oldName to $newName", false);
 		}		
+	}
+
+	private function replacePostContents($old, $new)
+	{
+		WP_CLI::runcommand("search-replace $old $new wp_posts --verbose");
 	}
 }

@@ -11,10 +11,14 @@ use WP_CLI_Command;
  */
 class Sanitizer extends WP_CLI_Command
 {
+	/**
+	 * List of sanitized Attachments
+	 * @var array
+	 */
 	protected $sanitizedAttachments = [];
 
 	/**
-	 * Sanitizes filenames in Database (guid) and renames the files in storage (wp-content/uploads).
+	 * Sanitizes WP attachments in Database and renames files on disk if the filename differs from sanitize_title().
 	 *
 	 *
 	 * ## EXAMPLES
@@ -63,7 +67,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Returns all attachments from the WP Database.
-	 * @return [array] All WP Attachments
+	 * @return array All WP Attachments
 	 */
 	private function getAttachmentPosts()
 	{
@@ -78,8 +82,8 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Sanitizes a given attachment if the sanitized name differs from the original name.
-	 * @param  [int] $attachmentID    ID of the attachment to be sanitized.
-	 * @param  [string] $attachment   Path of the attachment to be sanitized.
+	 * @param  int $attachmentID    ID of the attachment to be sanitized.
+	 * @param  string $attachment   Path of the attachment to be sanitized.
 	 */
 	private function sanitizeAttachmentIfNeeded($attachmentID, $attachment)
 	{

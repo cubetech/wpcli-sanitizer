@@ -6,6 +6,8 @@ if (! class_exists('WP_CLI')) {
 	return;
 }
 
+require_once(__DIR__ . '/src/Sanitizer.php');
+
 /**
  * Registers the sanitize command to the WP-Cli
  *

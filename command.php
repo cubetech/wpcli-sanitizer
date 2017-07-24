@@ -5,7 +5,6 @@ use Cubetech\WPCli\Sanitizer;
 if (! class_exists('WP_CLI')) {
 	return;
 }
-require_once('vendor/autoload.php');
 
 /**
  * Registers the sanitize command to the WP-Cli

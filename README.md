@@ -38,6 +38,10 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ## Changelog
 
+### 0.1.2 
+
+- Fixed autoloading.
+
 ### 0.1.1 
 
 - Fixed composer.json schema.

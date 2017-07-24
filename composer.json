@@ -8,21 +8,19 @@
     "authors": [
         {
             "name": "Remo Blaser",
-            "email": "remo.blaser@cubetech.ch",
+            "email": "remo.blaser@cubetech.ch"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "files": [ "command.php" ]
+        "files": [ "command.php" ],
+        "psr-4": {"Cubetech\\WPCli\\": "src/"}
     },
     "require": {
         "wp-cli/wp-cli": "^1.1.0"
     },
     "require-dev": {
         "behat/behat": "~2.5"
-    },
-    "autoload": {
-        "psr-4": {"Cubetech\\WPCli\\": "src/"}
     }
 }

@@ -26,11 +26,13 @@ class Sanitizer extends WP_CLI_Command
 	public function __invoke($args, $assoc_args)
 	{
 		$posts = $this->getAttachmentPosts();
+		$sanitizedCount = 0;
 		foreach ($posts as $post) {
 			$attachment = get_attached_file($post->ID);
-			$this->sanitizeAttachmentIfNeeded($post->ID, $attachment);
+			$wasSanitized = $this->sanitizeAttachmentIfNeeded($post->ID, $attachment);
+			$sanitizedCount = $wasSanitized ? $sanitizedCount+1 : $sanitizedCount;
 		}
-		WP_CLI::success("Sanitized attachments.");
+		WP_CLI::success("Sanitized $sanitizedCount attachments.");
 	}
 
 	/**
@@ -68,7 +70,11 @@ class Sanitizer extends WP_CLI_Command
 				WP_CLI::error("Failed updating attachment with ID $attachmentID");
 			}
 			$this->renameFile($attachment, $sanitizedAttachment);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	/**

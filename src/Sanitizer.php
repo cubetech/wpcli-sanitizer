@@ -7,7 +7,7 @@ use WP_CLI_Command;
 
 /**
  * Sanitize Wordpress attachments if their filename differs from the filename resulted from sanitize_title
- * 
+ *
  * @see sanitize_title()
  * @version 1.0.0
  */
@@ -20,7 +20,7 @@ class Sanitizer extends WP_CLI_Command
 	 * ## EXAMPLES
 	 *
 	 *     wp media ct-sanitize
-	 * 
+	 *
 	 * @when after_wp_load
 	 */
 	public function __invoke($args, $assoc_args)
@@ -37,7 +37,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Returns all attachments from the WP Database.
-	 * 
+	 *
 	 * @return array All WP Attachments
 	 */
 	private function getAttachmentPosts()
@@ -53,7 +53,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Sanitizes a given attachment if the sanitized name differs from the original name.
-	 * 
+	 *
 	 * @param  int $attachmentID    ID of the attachment to be sanitized.
 	 * @param  string $attachment   Path of the attachment to be sanitized.
 	 */
@@ -75,6 +75,7 @@ class Sanitizer extends WP_CLI_Command
 			$this->renameFile($attachment, $sanitizedAttachment);
 			$sanitizedAttachmentUrl = wp_get_attachment_url($attachmentID);
 			$this->replacePostContents($attachmentUrl, $sanitizedAttachmentUrl);
+			WP_CLI::line('Sanitized: ' . $attachmentPathInfo['filename']);
 			return true;
 		}
 
@@ -88,7 +89,7 @@ class Sanitizer extends WP_CLI_Command
 	{
 		if (! rename($oldName, $newName)) {
 			WP_CLI::error("Failed renaming $oldName to $newName", false);
-		}		
+		}
 	}
 
 	private function replacePostContents($old, $new)

@@ -7,37 +7,23 @@ use WP_CLI_Command;
 
 /**
  * Sanitize Wordpress attachments if their filename differs from the filename resulted from sanitize_title
+ * 
  * @see sanitize_title()
+ * @version 1.0.0
  */
 class Sanitizer extends WP_CLI_Command
 {
-	/**
-	 * List of sanitized Attachments
-	 * @var array
-	 */
-	protected $sanitizedAttachments = [];
-
 	/**
 	 * Sanitizes WP attachments in Database and renames files on disk if the filename differs from sanitize_title().
 	 *
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp sanitize
+	 *     wp media ct-sanitize
 	 *
 	 * @when after_wp_load
 	 */
 	public function __invoke($args, $assoc_args)
-	{
-		$this->db();
-		$this->files();
-	}
-
-	
-	/**
-	 * Sanitizes WP attachments in Database (_wp_attached_file).
-	 */
-	public function db()
 	{
 		$posts = $this->getAttachmentPosts();
 		foreach ($posts as $post) {
@@ -48,25 +34,8 @@ class Sanitizer extends WP_CLI_Command
 	}
 
 	/**
-	 * Renames files which were previously sanitized in the WP Database.
-	 */
-	public function files()
-	{
-		$successfulRenames = 0;
-
-		foreach ($this->sanitizedAttachments as $oldName => $newName) {
-			$result = rename($oldName, $newName);
-			if ($result) {
-				$successfulRenames++;
-			} else {
-				WP_CLI::error("Failed renaming $oldName to $newName");
-			}
-		}
-		WP_CLI::success("Renamed $successfulRenames files.");
-	}
-
-	/**
 	 * Returns all attachments from the WP Database.
+	 * 
 	 * @return array All WP Attachments
 	 */
 	private function getAttachmentPosts()
@@ -82,6 +51,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Sanitizes a given attachment if the sanitized name differs from the original name.
+	 * 
 	 * @param  int $attachmentID    ID of the attachment to be sanitized.
 	 * @param  string $attachment   Path of the attachment to be sanitized.
 	 */
@@ -93,13 +63,21 @@ class Sanitizer extends WP_CLI_Command
 		//Only update attachment if the filename differs
 		if ($sanitizedFilename != $attachmentPathInfo['filename']) {
 			$sanitizedAttachment = "{$attachmentPathInfo['dirname']}/{$sanitizedFilename}.{$attachmentPathInfo['extension']}";
-			$this->sanitizedAttachments[$attachment] = $sanitizedAttachment;
-			
-			$result = update_attached_file($attachmentID, $sanitizedAttachment);
 
-			if (! $result) {
+			if (! update_attached_file($attachmentID, $sanitizedAttachment)) {
 				WP_CLI::error("Failed updating attachment with ID $attachmentID");
 			}
+			$this->renameFile($attachment, $sanitizedAttachment);
 		}
+	}
+
+	/**
+	 * Renames files which were previously sanitized in the WP Database.
+	 */
+	private function renameFile($oldName, $newName)
+	{
+		if (! rename($oldName, $newName)) {
+			WP_CLI::error("Failed renaming $oldName to $newName");
+		}		
 	}
 }

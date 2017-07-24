@@ -13,4 +13,4 @@ require_once(__DIR__ . '/src/Sanitizer.php');
  *
  * @when before_wp_load
  */
-WP_CLI::add_command('sanitize', Sanitizer::class);
+WP_CLI::add_command('media ct-sanitize', Sanitizer::class);

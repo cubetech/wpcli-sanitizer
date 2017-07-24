@@ -7,6 +7,7 @@ use WP_CLI_Command;
 
 /**
  * Sanitize Wordpress attachments if their filename differs from the filename resulted from sanitize_title
+ * 
  * @see sanitize_title()
  * @version 1.0.0
  */
@@ -18,7 +19,7 @@ class Sanitizer extends WP_CLI_Command
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp sanitize
+	 *     wp media ct-sanitize
 	 *
 	 * @when after_wp_load
 	 */
@@ -34,6 +35,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Returns all attachments from the WP Database.
+	 * 
 	 * @return array All WP Attachments
 	 */
 	private function getAttachmentPosts()
@@ -49,6 +51,7 @@ class Sanitizer extends WP_CLI_Command
 
 	/**
 	 * Sanitizes a given attachment if the sanitized name differs from the original name.
+	 * 
 	 * @param  int $attachmentID    ID of the attachment to be sanitized.
 	 * @param  string $attachment   Path of the attachment to be sanitized.
 	 */

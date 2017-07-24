@@ -2,7 +2,7 @@ cubetech/wpcli-sanitizer
 ======================
 
 ## Using
-`wp sanitize` sanitizes Wordpress attachments if their filenames differ from the result of `sanitize_title`.
+`wp media ct-sanitize` sanitizes Wordpress attachments if their filenames differ from the result of `sanitize_title`.
 
 ## Installing
 

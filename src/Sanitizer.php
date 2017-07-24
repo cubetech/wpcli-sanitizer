@@ -72,7 +72,7 @@ class Sanitizer extends WP_CLI_Command
 	 */
 	private function renameFile($oldName, $newName)
 	{
-		if (! rename($oldName, $newName);) {
+		if (! rename($oldName, $newName)) {
 			WP_CLI::error("Failed renaming $oldName to $newName");
 		}		
 	}

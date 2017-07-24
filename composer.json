@@ -1,8 +1,8 @@
 {
-    "name": "cubetech/wpcli.sanitizer",
+    "name": "cubetech/wpcli-sanitizer",
     "description": "",
     "type": "wp-cli-package",
-    "homepage": "https://github.com/cubetech/wpcli.sanitizer",
+    "homepage": "https://github.com/cubetech/wpcli-sanitizer",
     "license": "MIT",
     "authors": [],
     "minimum-stability": "dev",

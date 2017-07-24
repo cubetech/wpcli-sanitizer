@@ -64,7 +64,7 @@ class Sanitizer extends WP_CLI_Command
 		$sanitizedFilename = sanitize_title($attachmentPathInfo['filename']);
 
 		//Only update attachment if the filename differs
-		if ($sanitizedFilename != $attachmentPathInfo['filename']) {
+		if ($sanitizedFilename != strtolower($attachmentPathInfo['filename'])) {
 			$sanitizedAttachment = "{$attachmentPathInfo['dirname']}/{$sanitizedFilename}.{$attachmentPathInfo['extension']}";
 
 			if (! update_attached_file($attachmentID, $sanitizedAttachment)) {

@@ -14,8 +14,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "files": [ "command.php" ],
-        "psr-4": {"Cubetech\\WPCli\\": "src/"}
+        "files": [ "command.php", "src/Sanitizer.php" ]
     },
     "require": {
         "wp-cli/wp-cli": "^1.1.0"

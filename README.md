@@ -36,6 +36,9 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ## Changelog
 
+### 1.0.3
+- Handle OSX specific cases on umlauts before sanitizing.
+
 ### 1.0.2 
 - Count amount of sanitized attachments.
 

@@ -61,7 +61,13 @@ class Sanitizer extends WP_CLI_Command
 	{
 		$attachmentUrl = wp_get_attachment_url($attachmentID);
 		$attachmentPathInfo = pathinfo($attachment);
-		$sanitizedFilename = sanitize_title($attachmentPathInfo['filename']);
+		
+		$unsanitizedFilename = str_replace('ü', 'ue', $attachmentPathInfo['filename']);
+		$unsanitizedFilename = str_replace('ä', 'ae', $unsanitizedFilename);
+		$unsanitizedFilename = str_replace('ö', 'oe', $unsanitizedFilename);
+
+		$unsanitizedFilename = preg_replace('/[^A-Za-z0-9\-\_]/', '', $unsanitizedFilename);
+		$sanitizedFilename = sanitize_title($unsanitizedFilename);
 
 		//Only update attachment if the filename differs
 		if ($sanitizedFilename != strtolower($attachmentPathInfo['filename'])) {
